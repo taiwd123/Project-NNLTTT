@@ -1,53 +1,43 @@
-package AdminForm;
+package NhanVienForm;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
+import java.awt.Label;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
+import javax.swing.ButtonGroup;
+import javax.swing.GroupLayout;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
+import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.GroupLayout.Alignment;
+import javax.swing.LayoutStyle.ComponentPlacement;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
-import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
-import javax.swing.JTabbedPane;
-import javax.swing.ImageIcon;
-import java.awt.Font;
-import java.awt.Label;
-import javax.swing.JTable;
-import javax.swing.JScrollPane;
-import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.JTextField;
-import javax.swing.JComboBox;
-import javax.swing.JDialog;
-import javax.swing.JEditorPane;
-import javax.swing.JButton;
-import javax.swing.JRadioButton;
-import java.awt.event.FocusAdapter;
-import java.awt.event.FocusEvent;
+
 import com.toedter.calendar.JDateChooser;
 
+import AdminForm.AdminJFrame;
 import Login.LoginJDialog;
 
-import java.awt.FlowLayout;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-
-public class AdminJFrame extends JFrame {
+public class NhanVienJFrame extends JFrame {
 
 	private JPanel contentPane;
-	private JTable tableThongTinNV;
-	private JTextField textTenNV;
-	private JTextField textDiaChi;
-	private JTextField textDienThoai;
-	private JTextField textGhiChu;
-	private JTextField txtTimKiem;
-	private JTable tableTaiKhoan;
-	private JTextField textField_2;
-	private JTextField textField_3;
 	private JTable table;
 	private JTable table_1;
 	private JTextField textSDTKH;
@@ -74,7 +64,7 @@ public class AdminJFrame extends JFrame {
 	private JTextField textSoLuongSP;
 	private JTextField textTrangThai;
 	private JTextField textChuThichSP;
-	private static AdminJFrame frame;
+	private static NhanVienJFrame frame;
 
 	/**
 	 * Launch the application.
@@ -82,11 +72,11 @@ public class AdminJFrame extends JFrame {
 	public static void main(String[] args) {
 		/*
 		 * EventQueue.invokeLater(new Runnable() { public void run() { try { frame = new
-		 * AdminJFrame(); frame.setVisible(true); } catch (Exception e) {
+		 * NhanVienJFrame(); frame.setVisible(true); } catch (Exception e) {
 		 * e.printStackTrace(); } } });
 		 */
 		try {
-			frame = new AdminJFrame();
+			frame = new NhanVienJFrame();
 			frame.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			frame.setVisible(true);
 			frame.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -103,7 +93,7 @@ public class AdminJFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public AdminJFrame() {
+	public NhanVienJFrame() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1390, 770);
 		contentPane = new JPanel();
@@ -115,284 +105,6 @@ public class AdminJFrame extends JFrame {
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.LEFT);
 		tabbedPane.setFont(new Font("Tahoma", Font.BOLD, 20));
 		
-		JTabbedPane tabbedNhanVien = new JTabbedPane(JTabbedPane.TOP);
-		tabbedNhanVien.setFont(new Font("Tahoma", Font.BOLD, 14));
-		tabbedPane.addTab("Nh\u00E2n Vi\u00EAn", new ImageIcon(AdminJFrame.class.getResource("/images/nhanvien.png")), tabbedNhanVien, null);
-		
-		JPanel panelThongTinNV = new JPanel();
-		tabbedNhanVien.addTab("Th\u00F4ng Tin Nh\u00E2n Vi\u00EAn", null, panelThongTinNV, null);
-		
-		JScrollPane scrollPaneThongTinNV = new JScrollPane();
-		
-		 String[] columnNamesNV = {"STT", "Mã Nhân Viên","Tên Nhân Viên","Ngày Sinh", "Giới Tính","Dịa Chỉ","Điện Thoại", "Chức Vụ", "Ghi Chú"}; 
-		 Object[][] data= {};
-		 DefaultTableModel model = new DefaultTableModel(data, columnNamesNV);
-		
-		tableThongTinNV = new JTable(model);
-		JTableHeader header = tableThongTinNV.getTableHeader();
-		header.setFont(new Font("Tahoma", Font.BOLD, 12));
-		scrollPaneThongTinNV.setViewportView(tableThongTinNV);
-		
-		JPanel panel_1 = new JPanel();
-		
-		JPanel panel_2 = new JPanel();
-		GroupLayout gl_panelThongTinNV = new GroupLayout(panelThongTinNV);
-		gl_panelThongTinNV.setHorizontalGroup(
-			gl_panelThongTinNV.createParallelGroup(Alignment.TRAILING)
-				.addGroup(gl_panelThongTinNV.createSequentialGroup()
-					.addContainerGap()
-					.addGroup(gl_panelThongTinNV.createParallelGroup(Alignment.LEADING)
-						.addComponent(scrollPaneThongTinNV, GroupLayout.DEFAULT_SIZE, 1070, Short.MAX_VALUE)
-						.addGroup(gl_panelThongTinNV.createSequentialGroup()
-							.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 689, Short.MAX_VALUE)
-							.addGap(18)
-							.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 363, Short.MAX_VALUE)))
-					.addContainerGap())
-		);
-		gl_panelThongTinNV.setVerticalGroup(
-			gl_panelThongTinNV.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelThongTinNV.createSequentialGroup()
-					.addContainerGap()
-					.addComponent(scrollPaneThongTinNV, GroupLayout.PREFERRED_SIZE, 308, GroupLayout.PREFERRED_SIZE)
-					.addGap(18)
-					.addGroup(gl_panelThongTinNV.createParallelGroup(Alignment.TRAILING)
-						.addComponent(panel_2, GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE)
-						.addComponent(panel_1, GroupLayout.DEFAULT_SIZE, 296, Short.MAX_VALUE))
-					.addContainerGap())
-		);
-		
-		Label label_7 = new Label("Tìm Kiếm");
-		label_7.setBounds(131, 10, 102, 21);
-		label_7.setAlignment(Label.CENTER);
-		label_7.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JRadioButton rbtnMaNV = new JRadioButton("Mã Nhân Viên");
-		rbtnMaNV.setBounds(74, 55, 103, 21);
-		rbtnMaNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		JRadioButton rbtnTenNV = new JRadioButton("Tên Nhân Viên");
-		rbtnTenNV.setBounds(207, 55, 103, 21);
-		rbtnTenNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		ButtonGroup timkiem = new ButtonGroup();
-		timkiem.add(rbtnTenNV);
-		timkiem.add(rbtnMaNV);
-		
-		txtTimKiem = new JTextField();
-		txtTimKiem.setBounds(74, 89, 236, 33);
-		txtTimKiem.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if(txtTimKiem.getText().trim().equals("Nhập tìm kiếm")) {
-					txtTimKiem.setText("");
-				}
-			}
-			@Override
-			public void focusLost(FocusEvent e) {
-				if(txtTimKiem.getText().trim().equals("")) {
-					txtTimKiem.setText("Nhập tìm kiếm");
-				}
-			}
-		});
-		txtTimKiem.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		txtTimKiem.setText("Nhập tìm kiếm");
-		txtTimKiem.setColumns(10);
-		
-		JButton btnTim = new JButton("Tìm");
-		btnTim.setBounds(142, 141, 102, 33);
-		btnTim.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panel_2.setLayout(null);
-		panel_2.add(label_7);
-		panel_2.add(rbtnMaNV);
-		panel_2.add(rbtnTenNV);
-		panel_2.add(txtTimKiem);
-		panel_2.add(btnTim);
-		
-		Label label = new Label("Tên Nhân Viên:");
-		label.setBounds(10, 10, 115, 34);
-		label.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_1 = new Label("Ngày Sinh:");
-		label_1.setBounds(10, 50, 115, 34);
-		label_1.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_2 = new Label("Giới Tính:");
-		label_2.setBounds(10, 90, 115, 34);
-		label_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_3 = new Label("Địa Chỉ:");
-		label_3.setBounds(10, 130, 115, 34);
-		label_3.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_4 = new Label("Điện Thoại:");
-		label_4.setBounds(10, 170, 115, 34);
-		label_4.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_5 = new Label("Chức Vụ:");
-		label_5.setBounds(10, 210, 115, 34);
-		label_5.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		Label label_6 = new Label("Ghi Chú:");
-		label_6.setBounds(10, 250, 115, 34);
-		label_6.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		textTenNV = new JTextField();
-		textTenNV.setBounds(131, 10, 366, 34);
-		textTenNV.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textTenNV.setColumns(10);
-		
-		String[] cb_gioitinh = {"Nam", "Nữ", "Khác"};
-		JComboBox cbGioiTinh = new JComboBox(cb_gioitinh);
-		cbGioiTinh.setBounds(131, 90, 144, 34);
-		cbGioiTinh.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		textDiaChi = new JTextField();
-		textDiaChi.setBounds(131, 130, 366, 34);
-		textDiaChi.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textDiaChi.setColumns(10);
-		
-		textDienThoai = new JTextField();
-		textDienThoai.setBounds(131, 170, 366, 34);
-		textDienThoai.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textDienThoai.setColumns(10);
-		
-		String[] cb_chucvu = {"Nhân Viên","Admin"};
-		JComboBox cbChucVu = new JComboBox(cb_chucvu);
-		cbChucVu.setBounds(131, 210, 144, 34);
-		cbChucVu.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		
-		textGhiChu = new JTextField();
-		textGhiChu.setBounds(131, 250, 366, 34);
-		textGhiChu.setFont(new Font("Tahoma", Font.PLAIN, 12));
-		textGhiChu.setColumns(10);
-		
-		JButton btnThem = new JButton("Thêm");
-		btnThem.setBounds(560, 10, 115, 34);
-		btnThem.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JButton btnXoa = new JButton("Xóa");
-		btnXoa.setBounds(560, 54, 115, 34);
-		btnXoa.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JButton btnCapNhat = new JButton("Cập Nhật");
-		btnCapNhat.setBounds(560, 101, 115, 34);
-		btnCapNhat.setFont(new Font("Tahoma", Font.BOLD, 12));
-		
-		JButton btnReset = new JButton("Reset");
-		btnReset.setBounds(560, 145, 115, 34);
-		btnReset.setFont(new Font("Tahoma", Font.BOLD, 12));
-		panel_1.setLayout(null);
-		panel_1.add(label);
-		panel_1.add(textTenNV);
-		panel_1.add(btnThem);
-		panel_1.add(label_1);
-		panel_1.add(label_2);
-		panel_1.add(label_3);
-		panel_1.add(label_4);
-		panel_1.add(cbGioiTinh);
-		panel_1.add(textDiaChi);
-		panel_1.add(textDienThoai);
-		panel_1.add(btnXoa);
-		panel_1.add(btnCapNhat);
-		panel_1.add(btnReset);
-		panel_1.add(label_5);
-		panel_1.add(cbChucVu);
-		panel_1.add(label_6);
-		panel_1.add(textGhiChu);
-		
-		JDateChooser dateChooser = new JDateChooser();
-		dateChooser.setBounds(131, 54, 144, 30);
-		panel_1.add(dateChooser);
-		panelThongTinNV.setLayout(gl_panelThongTinNV);
-		
-		JPanel panelTaiKhoanNV = new JPanel();
-		tabbedNhanVien.addTab("T\u00E0i Kho\u1EA3n Nh\u00E2n Vi\u00EAn", null, panelTaiKhoanNV, null);
-		
-		JScrollPane scrollPaneTaiKhoan = new JScrollPane();
-		
-		String[] columnNamesTK = {"STT", "Mã Nhân Viên","Tên Nhân Viên","Username", "Password"}; 
-		Object[][] dataTK= {};
-		DefaultTableModel modeTK = new DefaultTableModel(dataTK, columnNamesTK);
-		
-		tableTaiKhoan = new JTable(modeTK);
-		scrollPaneTaiKhoan.setViewportView(tableTaiKhoan);
-		
-		JPanel panel_3 = new JPanel();
-		panel_3.setLayout(null);
-		
-		Label label_8 = new Label("Mã Nhân Viên:");
-		label_8.setFont(new Font("Tahoma", Font.BOLD, 12));
-		label_8.setBounds(10, 31, 107, 33);
-		panel_3.add(label_8);
-		
-		Label label_8_2 = new Label("Username:");
-		label_8_2.setFont(new Font("Tahoma", Font.BOLD, 12));
-		label_8_2.setBounds(10, 74, 107, 33);
-		panel_3.add(label_8_2);
-		
-		Label label_8_3 = new Label("Password:");
-		label_8_3.setFont(new Font("Tahoma", Font.BOLD, 12));
-		label_8_3.setBounds(10, 113, 107, 33);
-		panel_3.add(label_8_3);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(158, 74, 262, 33);
-		panel_3.add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(158, 113, 262, 33);
-		panel_3.add(textField_3);
-		
-		JButton btnThemTK = new JButton("Thêm");
-		btnThemTK.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnThemTK.setBounds(10, 198, 90, 33);
-		panel_3.add(btnThemTK);
-		GroupLayout gl_panelTaiKhoanNV = new GroupLayout(panelTaiKhoanNV);
-		gl_panelTaiKhoanNV.setHorizontalGroup(
-			gl_panelTaiKhoanNV.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelTaiKhoanNV.createSequentialGroup()
-					.addGap(10)
-					.addComponent(scrollPaneTaiKhoan, GroupLayout.DEFAULT_SIZE, 1070, Short.MAX_VALUE)
-					.addGap(10))
-				.addGroup(Alignment.TRAILING, gl_panelTaiKhoanNV.createSequentialGroup()
-					.addGap(312)
-					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 472, Short.MAX_VALUE)
-					.addGap(306))
-		);
-		gl_panelTaiKhoanNV.setVerticalGroup(
-			gl_panelTaiKhoanNV.createParallelGroup(Alignment.LEADING)
-				.addGroup(gl_panelTaiKhoanNV.createSequentialGroup()
-					.addGap(10)
-					.addComponent(scrollPaneTaiKhoan, GroupLayout.DEFAULT_SIZE, 330, Short.MAX_VALUE)
-					.addGap(18)
-					.addComponent(panel_3, GroupLayout.DEFAULT_SIZE, 256, Short.MAX_VALUE)
-					.addGap(28))
-		);
-		
-		JButton btnCapNhatTK = new JButton("Cập Nhật");
-		btnCapNhatTK.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnCapNhatTK.setBounds(132, 198, 90, 33);
-		panel_3.add(btnCapNhatTK);
-		
-		JButton btnXoaTK = new JButton("Xóa");
-		btnXoaTK.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnXoaTK.setBounds(254, 198, 90, 33);
-		panel_3.add(btnXoaTK);
-		
-		JButton btnRestTK = new JButton("Reset");
-		btnRestTK.setFont(new Font("Tahoma", Font.BOLD, 12));
-		btnRestTK.setBounds(372, 198, 90, 33);
-		panel_3.add(btnRestTK);
-		
-		JComboBox cbMaNV = new JComboBox();
-		cbMaNV.setBounds(158, 31, 133, 33);
-		panel_3.add(cbMaNV);
-		panelTaiKhoanNV.setLayout(gl_panelTaiKhoanNV);
-		
-		JTableHeader headerTK = tableTaiKhoan.getTableHeader();
-		headerTK.setFont(new Font("Tahoma", Font.BOLD, 12));
 		
 		JPanel panelThongTin = new JPanel();
 		tabbedPane.addTab("Hóa Đơn", new ImageIcon(AdminJFrame.class.getResource("/images/hoadon.png")), panelThongTin, null);
@@ -961,8 +673,9 @@ public class AdminJFrame extends JFrame {
 //				frame.setVisible(false);
 			}
 		});
-		tabbedPane.addTab("Đăng Xuất", new ImageIcon(AdminJFrame.class.getResource("/images/777820.png")), panel_13, null);
+		tabbedPane.addTab("Đăng Xuất", new ImageIcon(NhanVienJFrame.class.getResource("/images/777820.png")), panel_13, null);
 		panel.setLayout(gl_panel);
 		contentPane.setLayout(gl_contentPane);
 	}
+
 }
