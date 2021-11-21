@@ -3,6 +3,7 @@ package BEAN;
 import java.util.Date;
 
 public class NhanVien {
+	private int idnv;
 	private String tennv;
 	private Date ngaysinh;
 	private String gioitinh;
@@ -10,6 +11,12 @@ public class NhanVien {
 	private String sodt;
 	private String ghichu;
 	private String chucvu;
+	public int getIdnv() {
+		return idnv;
+	}
+	public void setIdnv(int idnv) {
+		this.idnv = idnv;
+	}
 	public String getTennv() {
 		return tennv;
 	}
@@ -55,6 +62,17 @@ public class NhanVien {
 	
 	public NhanVien() {
 		
+	}
+	
+	public NhanVien(int idnv,String tennv, Date ngayinh, String gioitinh, String diachi, String sodt, String ghichu, String chucvu) {
+		this.idnv = idnv;
+		this.tennv = tennv;
+		this.ngaysinh = ngayinh;
+		this.gioitinh = gioitinh;
+		this.diachi = diachi;
+		this.sodt = sodt;
+		this.ghichu = ghichu;
+		this.chucvu = chucvu;
 	}
 	
 	public NhanVien(String tennv, Date ngayinh, String gioitinh, String diachi, String sodt, String ghichu, String chucvu) {

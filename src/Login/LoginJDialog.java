@@ -11,9 +11,11 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import AdminForm.AdminJFrame;
+import BEAN.NhanVien;
 import BEAN.TaiKhoan;
 import DAO.NhanVienDAO;
 import DAO.TaiKhoanDAO;
+import NhanVienForm.NhanVienJFrame;
 
 import java.awt.Font;
 import java.awt.Color;
@@ -27,7 +29,6 @@ public class LoginJDialog extends JDialog {
 	private final JPanel contentPanel = new JPanel();
 	private JTextField textTaiKhoan;
 	private JPasswordField passwordField;
-	private static LoginJDialog dialog;
 	//private ChangePassJDialog dialogChange = new ChangePassJDialog();
 
 	/**
@@ -35,7 +36,7 @@ public class LoginJDialog extends JDialog {
 	 */
 	public static void main(String[] args) {
 		try {
-			dialog = new LoginJDialog();
+			LoginJDialog dialog = new LoginJDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -111,14 +112,18 @@ public class LoginJDialog extends JDialog {
 				}
 				TaiKhoan acc = TaiKhoanDAO.checkTaiKhoan(user, passCorrect);
 				if(acc.getTaikhoan() != null) {
-					
-					if(NhanVienDAO.getNhanVien(acc.getManv()).getChucvu().equals("Admin")) {
-						
-						AdminJFrame adminJFrame = new AdminJFrame();
-						adminJFrame.main(null);
-						JOptionPane.showMessageDialog(null, "Đăng nhập thành công!", "Đăng nhập",
-		                        JOptionPane.INFORMATION_MESSAGE);
-						dialog.setVisible(false);
+					NhanVien nv = NhanVienDAO.getNhanVien(acc.getManv());
+					if(nv.getChucvu().equals("Admin")) {
+						setVisible(false);
+						AdminJFrame adminJFrame = new AdminJFrame(nv.getIdnv());
+						//adminJFrame.setMaNV(nv.getIdnv());
+						adminJFrame.display();
+					}
+					if(nv.getChucvu().equals("NhanVien")) {
+						setVisible(false);
+						NhanVienJFrame nhanvienJFrame = new NhanVienJFrame(nv.getIdnv());
+						nhanvienJFrame.setMaNV(nv.getIdnv());
+						nhanvienJFrame.display();
 					}
 				}
 				else {
@@ -135,8 +140,8 @@ public class LoginJDialog extends JDialog {
 		btnDoiMK.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ChangePassJDialog changePassJDialog = new ChangePassJDialog();
-				changePassJDialog.main(null);;
-				dialog.setVisible(false);
+				changePassJDialog.display();
+				setVisible(false);
 			}
 		});
 		btnDoiMK.setFont(new Font("Tahoma", Font.BOLD, 14));

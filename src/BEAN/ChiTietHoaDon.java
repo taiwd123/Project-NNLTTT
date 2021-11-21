@@ -1,6 +1,7 @@
 package BEAN;
 
 public class ChiTietHoaDon {
+	private int idcthoadon;
 	private int mahoadon;
 	private String masanpham;
 	private int soluong;
@@ -9,6 +10,14 @@ public class ChiTietHoaDon {
 	
 	public ChiTietHoaDon() {
 		
+	}
+
+	public int getIdcthoadon() {
+		return idcthoadon;
+	}
+
+	public void setIdcthoadon(int idcthoadon) {
+		this.idcthoadon = idcthoadon;
 	}
 
 	public int getMahoadon() {
@@ -51,6 +60,15 @@ public class ChiTietHoaDon {
 		this.ghichu = ghichu;
 	}
 
+	public ChiTietHoaDon(int idchhoadon,int mahoadon, String masanpham, int soluong, double tongtien, String ghichu) {
+		super();
+		this.idcthoadon = idchhoadon;
+		this.mahoadon = mahoadon;
+		this.masanpham = masanpham;
+		this.soluong = soluong;
+		this.tongtien = tongtien;
+		this.ghichu = ghichu;
+	}
 	public ChiTietHoaDon(int mahoadon, String masanpham, int soluong, double tongtien, String ghichu) {
 		super();
 		this.mahoadon = mahoadon;

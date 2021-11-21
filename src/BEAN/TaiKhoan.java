@@ -1,6 +1,7 @@
 package BEAN;
 
 public class TaiKhoan {
+	private int idtk;
 	private int manv;
 	private String taikhoan;
 	private String matkhau;
@@ -8,10 +9,23 @@ public class TaiKhoan {
 	public TaiKhoan() {
 		
 	}
-	public TaiKhoan(int manv, String taikhoan, String matkhau) {
+	public TaiKhoan(int idtk,int manv, String taikhoan, String matkhau) {
+		this.idtk = idtk;
 		this.manv = manv;
 		this.taikhoan = taikhoan;
 		this.matkhau = matkhau;
+	}
+	public TaiKhoan(int id, String name, String pass) {
+		// TODO Auto-generated constructor stub
+		this.manv = id;
+		this.taikhoan = name;
+		this.matkhau = pass;
+	}
+	public int getIdtk() {
+		return idtk;
+	}
+	public void setIdtk(int idtk) {
+		this.idtk = idtk;
 	}
 	public int getManv() {
 		return manv;

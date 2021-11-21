@@ -26,14 +26,28 @@ public class ChangePassJDialog extends JDialog {
 	private JPasswordField passwordHienTai;
 	private JPasswordField passwordMoi;
 	private JPasswordField passwordXacNhan;
-	private static ChangePassJDialog dialog;
 	//private LoginJDialog dialogLogin = new LoginJDialog();
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
+//	public static void main(String[] args) {
+//		try {
+//			dialog = new ChangePassJDialog();
+//			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+//			dialog.setVisible(true);
+//			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+//		        @Override
+//		        public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+//		        	System.exit(0);
+//		        }
+//		    });
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
+	public void display() {
 		try {
-			dialog = new ChangePassJDialog();
+			ChangePassJDialog dialog = new ChangePassJDialog();
 			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
 			dialog.setVisible(true);
 			dialog.addWindowListener(new java.awt.event.WindowAdapter() {
@@ -46,7 +60,6 @@ public class ChangePassJDialog extends JDialog {
 			e.printStackTrace();
 		}
 	}
-
 	/**
 	 * Create the dialog.
 	 */
@@ -102,7 +115,7 @@ public class ChangePassJDialog extends JDialog {
 			public void actionPerformed(ActionEvent e) {
 				LoginJDialog loginJDialog = new LoginJDialog();
 				loginJDialog.main(null);;
-				dialog.setVisible(false);
+				setVisible(false);
 			}
 		});
 		btnLogin.setFont(new Font("Tahoma", Font.BOLD, 14));

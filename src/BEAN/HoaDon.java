@@ -1,10 +1,10 @@
 package BEAN;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class HoanDon {
+public class HoaDon {
 
-
+	private int idhoadon;
 	private int manv;
 	private String tenkh;
 	private String sodt;
@@ -13,10 +13,23 @@ public class HoanDon {
 	private double tongtien;
 	private String ghichu;
 	
-	public HoanDon() {
+	public HoaDon() {
 		
 	}
-	public HoanDon(int manv, String tenkh, String sodt, String diachi, Date ngaylaphoadon, double tongtien,
+	public HoaDon(int idhoadon,int manv, String tenkh, String sodt, String diachi, Date ngaylaphoadon, double tongtien,
+			String ghichu) {
+		super();
+		this.idhoadon = idhoadon;
+		this.manv = manv;
+		this.tenkh = tenkh;
+		this.sodt = sodt;
+		this.diachi = diachi;
+		this.ngaylaphoadon = ngaylaphoadon;
+		this.tongtien = tongtien;
+		this.ghichu = ghichu;
+	}
+	
+	public HoaDon(int manv, String tenkh, String sodt, String diachi, Date ngaylaphoadon, double tongtien,
 			String ghichu) {
 		super();
 		this.manv = manv;
@@ -28,6 +41,12 @@ public class HoanDon {
 		this.ghichu = ghichu;
 	}
 
+	public int getIdhoadon() {
+		return idhoadon;
+	}
+	public void setIdhoadon(int idhoadon) {
+		this.idhoadon = idhoadon;
+	}
 	public int getManv() {
 		return manv;
 	}
