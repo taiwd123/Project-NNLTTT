@@ -80,6 +80,26 @@ public class ChiTietHoaDonDAO {
 		
 		return false;
 	}
+	public static boolean deleteCTHDByMaHD(int mahd) {
+Connection con = DBConnection.CreateConnection();
+		
+		String sql = "delete from chitiethoadon where idhoadon = ?";
+		
+		PreparedStatement ps = null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, mahd);
+			if(ps.executeUpdate() != 0) {
+				return true;
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return false;
+	}
 	public static List<ChiTietHoaDon> getAllChiTietHD(){
 		List<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
 		Connection con = DBConnection.CreateConnection();

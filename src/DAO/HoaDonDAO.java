@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import BEAN.HoaDon;
+import BEAN.ThongKeNam;
+import BEAN.ThongKeThang;
 import DBConnection.DBConnection;
 
 public class HoaDonDAO {
@@ -130,6 +132,57 @@ public class HoaDonDAO {
 				
 				HoaDon hd = new HoaDon(idhd, idnv, tenkh, sdtkh, diachikh, nglaphd, tongtien, ghichu);
 				list.add(hd);
+			}
+			con.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+ 	public static List<ThongKeThang> getThongKeThang(int nam, int month){
+		Connection con = DBConnection.CreateConnection();
+		String sql = "select day(hoadon.ngayLapHD) as ngay, sum(hoadon.tongTien) as tong from hoadon "
+				+ "where year(hoadon.ngayLapHD) = ? and month(hoadon.ngayLapHD) = ? group by day(hoadon.ngayLapHD)";
+		List<ThongKeThang> list = new ArrayList<ThongKeThang>();
+		PreparedStatement ps =null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, nam);
+			ps.setInt(2, month);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				int ngay = rs.getInt(1);
+				double tong = rs.getDouble(2);
+				ThongKeThang tk = new ThongKeThang(ngay, tong);
+				list.add(tk);
+			}
+			con.close();
+			rs.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return list;
+	}
+ 	
+ 	public static List<ThongKeNam> getThongKeNam(int nam){
+		Connection con = DBConnection.CreateConnection();
+		String sql = "select month(hoadon.ngayLapHD) as thang, sum(hoadon.tongTien) as tong from hoadon where year(hoadon.ngayLapHD) = ? group by month(hoadon.ngayLapHD)";
+		List<ThongKeNam> list = new ArrayList<ThongKeNam>();
+		PreparedStatement ps =null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, nam);
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				int thang = rs.getInt(1);
+				double tong = rs.getDouble(2);
+				ThongKeNam tk = new ThongKeNam(thang, tong);
+				list.add(tk);
 			}
 			con.close();
 			rs.close();
