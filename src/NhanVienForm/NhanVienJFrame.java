@@ -100,6 +100,8 @@ public class NhanVienJFrame extends JFrame {
 	private JComboBox cb_Maloai;
 	private JComboBox cbMaSP;
 	private JComboBox cbMaHDCTHD;
+	private String maspCurr;
+	private int slCurr;
 
 	
 	//get ID từ form đăng nhập
@@ -170,6 +172,13 @@ public class NhanVienJFrame extends JFrame {
 		
 		
 		JPanel panelThongTin = new JPanel();
+		panelThongTin.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				loadListHD();
+				loadListCTHD();
+			}
+		});
 		tabbedPane.addTab("Hóa Đơn", new ImageIcon(NhanVienJFrame.class.getResource("/images/hoadon Icon.jpg")), panelThongTin, null);
 		
 		JPanel panel_4 = new JPanel();
@@ -215,6 +224,9 @@ public class NhanVienJFrame extends JFrame {
 				textSoLuongCTHD.setText(table_1.getModel().getValueAt(index, 4).toString().trim());
 				textTongTienCTHD.setText(table_1.getModel().getValueAt(index, 5).toString().trim());
 				textGhiChuCTHD.setText(table_1.getModel().getValueAt(index, 6).toString().trim());
+				
+				maspCurr = table_1.getModel().getValueAt(index, 3).toString().trim();
+				slCurr = Integer.parseInt(table_1.getModel().getValueAt(index, 4).toString().trim());
 				
 				cbMaHDCTHD.disable();
 			}
@@ -473,6 +485,21 @@ public class NhanVienJFrame extends JFrame {
 		panel_7.add(textTenSPCTHD);
 		
 		textSoLuongCTHD = new JTextField();
+		textSoLuongCTHD.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String masp = String.valueOf(cbMaSP.getSelectedItem());
+				if(!textSoLuongCTHD.getText().trim().equals("")) {
+					SanPham sp = SanPhamDAO.getSanPham(masp);
+					int sl = Integer.parseInt(textSoLuongCTHD.getText().trim());
+					double tongtien = sp.getGiaban() * sl;
+					textTongTienCTHD.setText(tongtien+"");
+				}
+				else {
+					textTongTienCTHD.setText(0+"");
+				}
+			}
+		});
 		textSoLuongCTHD.setFont(new Font("Tahoma", Font.PLAIN, 12));
 		textSoLuongCTHD.setColumns(10);
 		textSoLuongCTHD.setBounds(148, 147, 129, 28);
@@ -496,7 +523,13 @@ public class NhanVienJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if(cbMaSP.getSelectedItem()!= null) {
 					String masp = String.valueOf(cbMaSP.getSelectedItem());
-					textTenSPCTHD.setText(SanPhamDAO.getSanPham(masp).getTenSP());
+					SanPham sp = SanPhamDAO.getSanPham(masp);
+					textTenSPCTHD.setText(sp.getTenSP());
+					double gia = sp.getGiaban();
+					if(!textSoLuongCTHD.getText().trim().equals("")) {
+						int sl = Integer.parseInt(textSoLuongCTHD.getText().trim());
+						textTongTienCTHD.setText((gia * sl)+"");
+					}
 				}
 			}
 		});
@@ -516,24 +549,36 @@ public class NhanVienJFrame extends JFrame {
 				}
 				int mahd = Integer.parseInt(String.valueOf(cbMaHDCTHD.getSelectedItem()));
 				String masp = String.valueOf(cbMaSP.getSelectedItem());
-				double tongtien;
-				if(sl == 0) {
-					tongtien = 0;
-				}
-				else {
-					tongtien = Double.parseDouble(textTongTienCTHD.getText().trim());
-				}
-				String ghichu = textGhiChuCTHD.getText().trim();
-				ChiTietHoaDon cthd = new ChiTietHoaDon(mahd, masp,sl,tongtien,ghichu);
-				if(ChiTietHoaDonDAO.insertChiTietHD(cthd)) {
-					HoaDonDAO.updateTongTien(mahd, tongtien);
-					JOptionPane.showMessageDialog(null, "Thêm chi tiết hóa đơn thành công!", "Chi Tiết Hóa Đơn",
+				int slTrongCH = SanPhamDAO.getSoluong(masp);
+				if(sl > slTrongCH) {
+					JOptionPane.showMessageDialog(null, "Số lượng sản phẩm này trong của hàng không đủ!!", "Chi Tiết Hóa Đơn",
 	                        JOptionPane.INFORMATION_MESSAGE);
 				}
 				else {
-					JOptionPane.showMessageDialog(null, "Thêm chi tiết hóa đơn thất bại!", "Chi Tiết Hóa Đơn",
-	                        JOptionPane.ERROR_MESSAGE);
+					double tongtien;
+					if(sl == 0) {
+						tongtien = 0;
+					}
+					else {
+						tongtien = Double.parseDouble(textTongTienCTHD.getText().trim());
+					}
+					if(sl == slTrongCH) {
+						SanPhamDAO.updateTrangThai(masp, "Hết hàng");
+					}
+					String ghichu = textGhiChuCTHD.getText().trim();
+					ChiTietHoaDon cthd = new ChiTietHoaDon(mahd, masp,sl,tongtien,ghichu);
+					if(ChiTietHoaDonDAO.insertChiTietHD(cthd)) {
+						HoaDonDAO.updateTongTien(mahd, tongtien);
+						SanPhamDAO.updateSoluong(masp, -sl);
+						JOptionPane.showMessageDialog(null, "Thêm chi tiết hóa đơn thành công!", "Chi Tiết Hóa Đơn",
+		                        JOptionPane.INFORMATION_MESSAGE);
+					}
+					else {
+						JOptionPane.showMessageDialog(null, "Thêm chi tiết hóa đơn thất bại!", "Chi Tiết Hóa Đơn",
+		                        JOptionPane.ERROR_MESSAGE);
+					}
 				}
+				
 				loadListHD();
 				loadListCTHD();
 			}
@@ -556,8 +601,13 @@ public class NhanVienJFrame extends JFrame {
 						int maCTHD = Integer.parseInt(textMaCTHD.getText().trim());
 						int maHD = Integer.parseInt(String.valueOf(cbMaHDCTHD.getSelectedItem()));
 						double tongtien =0 - Double.parseDouble(textTongTienCTHD.getText().trim());
+						int slTrongKho =  SanPhamDAO.getSoluong(maspCurr);
+						if(slTrongKho == 0 && slCurr !=0) {
+							SanPhamDAO.updateTrangThai(maspCurr, "Còn Hàng");
+						}
 						if(ChiTietHoaDonDAO.deleteChiTietHD(maCTHD)) {
 							HoaDonDAO.updateTongTien(maHD, tongtien);
+							SanPhamDAO.updateSoluong(maspCurr, slCurr);
 							JOptionPane.showMessageDialog(null, "Xóa chi tiết hóa đơn thành công!", "Chi Tiết Hóa Đơn",
 			                        JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -601,13 +651,56 @@ public class NhanVienJFrame extends JFrame {
 						double tong = Double.parseDouble(textTongTienCTHD.getText());
 						String gchu = textGhiChuCTHD.getText();
 						ChiTietHoaDon cthd = new ChiTietHoaDon(idcthd, idhd, masp, sl, tong, gchu);
-						if(ChiTietHoaDonDAO.updateChiTietHD(cthd)) {
-							JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.INFORMATION_MESSAGE);
+						double ttCurr = ChiTietHoaDonDAO.getTongTien(idcthd);
+						double ttchange = ttCurr - tong;
+						if(masp.equals(maspCurr)) {
+							int slChange = sl - slCurr;
+							int slTrongKho = SanPhamDAO.getSoluong(masp);
+							if((slTrongKho - slChange) < 0) {
+								JOptionPane.showMessageDialog(null, "Số lượng sản phẩm này trong của hàng không đủ!!", "Chi Tiết Hóa Đơn",
+				                        JOptionPane.INFORMATION_MESSAGE);
+							}
+							else {
+								if(slTrongKho == 0 && (slTrongKho - slChange) >0) {
+									SanPhamDAO.updateTrangThai(masp, "Còn hàng");
+								}
+								if(ChiTietHoaDonDAO.updateChiTietHD(cthd)) {
+									HoaDonDAO.updateTongTien(idhd, -ttchange);
+									SanPhamDAO.updateSoluong(masp, -slChange);
+									JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.INFORMATION_MESSAGE);
+								}
+								else {
+									JOptionPane.showMessageDialog(null, "Cập Nhật Không Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.ERROR_MESSAGE);
+								}
+							}
 						}
 						else {
-							JOptionPane.showMessageDialog(null, "Cập Nhật Không Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.ERROR_MESSAGE);
+							int slCurrTrongKho = SanPhamDAO.getSoluong(maspCurr);
+							int slTrongKho = SanPhamDAO.getSoluong(masp);
+							if(slTrongKho < sl) {
+								JOptionPane.showMessageDialog(null, "Số lượng sản phẩm này trong của hàng không đủ!!", "Chi Tiết Hóa Đơn",
+				                        JOptionPane.INFORMATION_MESSAGE);
+							}
+							else {
+								if(slCurrTrongKho == 0 && slCurr !=0 ) {
+									SanPhamDAO.updateTrangThai(maspCurr, "Còn Hàng");
+								}
+								if(slTrongKho == sl) {
+									SanPhamDAO.updateTrangThai(masp, "Hết hàng");
+								}
+								if(ChiTietHoaDonDAO.updateChiTietHD(cthd)) {
+									HoaDonDAO.updateTongTien(idhd, -ttchange);
+									SanPhamDAO.updateSoluong(masp, -sl);
+									SanPhamDAO.updateSoluong(maspCurr, slCurr);
+									JOptionPane.showMessageDialog(null, "Cập Nhật Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.INFORMATION_MESSAGE);
+								}
+								else {
+									JOptionPane.showMessageDialog(null, "Cập Nhật Không Thành Công", "Chi Tiết Hóa Đơn", JOptionPane.ERROR_MESSAGE);
+								}
+							}
 						}
 						loadListCTHDByMaHD(idhd);
+						loadListHD();
 					}
 					
 				}
@@ -738,6 +831,13 @@ public class NhanVienJFrame extends JFrame {
 		);
 		
 		JTabbedPane tabbedSanPham = new JTabbedPane(JTabbedPane.TOP);
+		tabbedSanPham.addComponentListener(new ComponentAdapter() {
+			@Override
+			public void componentShown(ComponentEvent e) {
+				loadTableLSP();
+				loadTableSP();
+			}
+		});
 		tabbedSanPham.setFont(new Font("Tahoma", Font.BOLD, 14));
 		tabbedPane.addTab("Sản Phẩm", new ImageIcon(NhanVienJFrame.class.getResource("/images/sanpham Icon.png")), tabbedSanPham, null);
 		
@@ -767,7 +867,7 @@ public class NhanVienJFrame extends JFrame {
 				textTenSP.setText(table_3.getModel().getValueAt(index,2).toString());
 				cb_Maloai.setSelectedItem(table_3.getModel().getValueAt(index,3).toString());
 				cb_Maloai.disable();
-				textMaSP.disable();
+				textMaSP.setEditable(false);
 				textHangSX.setText(table_3.getModel().getValueAt(index,4).toString());
 				textGiaNhap.setText(table_3.getModel().getValueAt(index,5).toString());
 				textGiaBan.setText(table_3.getModel().getValueAt(index,6).toString());
@@ -780,6 +880,7 @@ public class NhanVienJFrame extends JFrame {
 					textChuThichSP.setText("");
 				}
 				
+				textTrangThai.setEditable(false);
 			}
 		});
 		scrollPane_3.setViewportView(table_3);
@@ -1001,20 +1102,19 @@ public class NhanVienJFrame extends JFrame {
 							int sl=Integer.valueOf(textSoLuongSP.getText());
 							String tt=textTrangThai.getText();
 							String ct=textChuThichSP.getText();
-							SanPham sp=new SanPham(masp, tensp, loaisp, hang, gnhap, gban, sl, tt, ct);
 							
-							if(SanPhamDAO.checkExistTenSP( tensp))	
-							{
-								if(SanPhamDAO.updateSP(sp)) {
-									JOptionPane.showMessageDialog(btnCapNhatSP, "Cập Nhật Sản Phẩm Thành Công", "Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
-									loadTableSP();
-								}
-								else {
-									JOptionPane.showMessageDialog(btnCapNhatSP, "Cập Nhật Sản Phẩm Không Thành Công", "Sản Phẩm", JOptionPane.ERROR_MESSAGE);
-								}
+							int slTrongCH = SanPhamDAO.getSoluong(masp);
+							if(slTrongCH == 0 && sl != 0) {
+								tt = "Còn hàng";
+								SanPhamDAO.updateTrangThai(masp, tt);
+							}
+							SanPham sp=new SanPham(masp, tensp, loaisp, hang, gnhap, gban, sl, tt, ct);
+							if(SanPhamDAO.updateSP(sp)) {
+								JOptionPane.showMessageDialog(btnCapNhatSP, "Cập Nhật Sản Phẩm Thành Công", "Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
+								loadTableSP();
 							}
 							else {
-								JOptionPane.showMessageDialog(btnCapNhatSP, "Sản phẩm đã tồn tại", "Update", JOptionPane.ERROR_MESSAGE);
+								JOptionPane.showMessageDialog(btnCapNhatSP, "Cập Nhật Sản Phẩm Không Thành Công", "Sản Phẩm", JOptionPane.ERROR_MESSAGE);
 							}
 												
 						}
@@ -1038,7 +1138,8 @@ public class NhanVienJFrame extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				clearTBSP();
 				cb_Maloai.enable();
-				textMaSP.enable();			
+				textMaSP.setEditable(true);		
+				textTrangThai.setEditable(true);
 			}
 		});
 		btnResetSP.setFont(new Font("Tahoma", Font.BOLD, 12));

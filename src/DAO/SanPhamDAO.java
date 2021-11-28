@@ -91,6 +91,50 @@ public class SanPhamDAO {
 		return false;
 	}
 	
+	public static boolean updateSoluong(String masp, int sl) {
+		Connection con = DBConnection.CreateConnection();
+		
+		String sql = "update sanpham set soluong=soluong +(?) where masp=?";
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, sl);
+			ps.setString(2, masp);
+			
+			if(ps.executeUpdate() != 0) {
+				return true;
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static boolean updateTrangThai(String masp, String th) {
+		Connection con = DBConnection.CreateConnection();
+		
+		String sql = "update sanpham set trangthai = ? where masp=?";
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, th);
+			ps.setString(2, masp);
+			
+			if(ps.executeUpdate() != 0) {
+				return true;
+			}
+			con.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
 	public static boolean deleteSP(String masp) {
 		Connection con = DBConnection.CreateConnection();
 
@@ -128,6 +172,27 @@ public class SanPhamDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public static int getSoluong(String masp) {
+		int sl = 0;
+		Connection con = DBConnection.CreateConnection();
+		String sql = "select soluong from sanpham where masp = ?";
+		
+		PreparedStatement ps = null;
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setString(1, masp);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				sl = rs.getInt(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sl;
 	}
 		
 	

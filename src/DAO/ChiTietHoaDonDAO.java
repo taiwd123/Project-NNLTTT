@@ -100,6 +100,27 @@ Connection con = DBConnection.CreateConnection();
 		
 		return false;
 	}
+	public static double getTongTien(int maCTHD) {
+		double tt = 0;
+		Connection con = DBConnection.CreateConnection();
+		String  sql = "select tongtien from chitiethoadon where idchitiethoadon = ?";
+		PreparedStatement ps = null;
+		
+		try {
+			ps = con.prepareStatement(sql);
+			ps.setInt(1, maCTHD);
+			
+			ResultSet rs = ps.executeQuery();
+			while(rs.next()) {
+				tt = rs.getDouble(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return tt;
+	}
 	public static List<ChiTietHoaDon> getAllChiTietHD(){
 		List<ChiTietHoaDon> list = new ArrayList<ChiTietHoaDon>();
 		Connection con = DBConnection.CreateConnection();
