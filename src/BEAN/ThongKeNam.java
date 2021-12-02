@@ -1,6 +1,6 @@
 package BEAN;
 
-public class ThongKeNam {
+public class ThongKeNam{
 	private int thang;
 	private double tong;
 	public int getThang() {

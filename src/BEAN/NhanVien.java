@@ -11,6 +11,13 @@ public class NhanVien {
 	private String sodt;
 	private String ghichu;
 	private String chucvu;
+	private double luongcb;
+	public double getluongcb() {
+		return luongcb;
+	}
+	public void setluongcb(double luongcb) {
+		this.luongcb = luongcb;
+	}
 	public int getIdnv() {
 		return idnv;
 	}
@@ -63,25 +70,31 @@ public class NhanVien {
 	public NhanVien() {
 		
 	}
-	
-	public NhanVien(int idnv,String tennv, Date ngayinh, String gioitinh, String diachi, String sodt, String ghichu, String chucvu) {
+	public NhanVien(String tennv, Date ngayinh, String gioitinh, String diachi, String sodt, String ghichu, String chucvu, double luongcb) {
+		this.tennv = tennv;
+		this.ngaysinh = ngayinh;
+		this.gioitinh = gioitinh;
+		this.diachi = diachi;
+		this.sodt = sodt;
+		this.ghichu = ghichu;
+		this.chucvu = chucvu;
+		this.luongcb = luongcb;
+	}
+	public NhanVien(int idnv, String tennv, Date ngaysinh, String gioitinh, String diachi, String sodt, String ghichu,
+			String chucvu, double luongcb) {
+		super();
 		this.idnv = idnv;
 		this.tennv = tennv;
-		this.ngaysinh = ngayinh;
+		this.ngaysinh = ngaysinh;
 		this.gioitinh = gioitinh;
 		this.diachi = diachi;
 		this.sodt = sodt;
 		this.ghichu = ghichu;
 		this.chucvu = chucvu;
+		this.luongcb = luongcb;
 	}
 	
-	public NhanVien(String tennv, Date ngayinh, String gioitinh, String diachi, String sodt, String ghichu, String chucvu) {
-		this.tennv = tennv;
-		this.ngaysinh = ngayinh;
-		this.gioitinh = gioitinh;
-		this.diachi = diachi;
-		this.sodt = sodt;
-		this.ghichu = ghichu;
-		this.chucvu = chucvu;
-	}
+	public double TinhLuong(int socong) {
+		return this.luongcb;
+	};
 }

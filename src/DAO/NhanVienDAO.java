@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.*;
 
+import BEAN.BanHang;
 import BEAN.NhanVien;
+import BEAN.QuanLi;
 import DBConnection.DBConnection;
 
 
@@ -18,7 +20,7 @@ public class NhanVienDAO {
 	public static boolean insertNhanVien(NhanVien NhanVien) {
 		Connection con = DBConnection.CreateConnection();
 		
-		String sql = "insert into nhanvien(tenNV,ngaySinh,gioiTinh,diaChi,soDT,ghiChu,chucVu) values(?,?,?,?,?,?,?)";
+		String sql = "insert into nhanvien(tenNV,ngaySinh,gioiTinh,diaChi,soDT,ghiChu,chucVu,luongcb) values(?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = null;
 		try {
 			ps = con.prepareStatement(sql);
@@ -31,6 +33,7 @@ public class NhanVienDAO {
 			String sdt = NhanVien.getSodt();
 			String gchu = NhanVien.getGhichu();
 			String cvu= NhanVien.getChucvu();
+			double luongcb = NhanVien.getluongcb();
 			
 			ps.setString(1,ten);
 			ps.setString(2, nsinh);
@@ -39,6 +42,7 @@ public class NhanVienDAO {
 			ps.setString(5, sdt);
 			ps.setString(6, gchu);
 			ps.setString(7, cvu);
+			ps.setDouble(8, luongcb);
 			
 			if(ps.executeUpdate() != 0) {
 				return true;
@@ -129,8 +133,9 @@ public class NhanVienDAO {
 				String phone = rs.getString("soDT");
 				String gchu = rs.getString("ghiChu");
 				String cvu = rs.getString("chucVu");
+				double luongcb = rs.getDouble("luongcb");
 				
-				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu);
+				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu,luongcb);
 				list.add(cs);
 			}
 			con.close();
@@ -160,8 +165,9 @@ public class NhanVienDAO {
 				String phone = rs.getString("soDT");
 				String gchu = rs.getString("ghiChu");
 				String cvu = rs.getString("chucVu");
+				double luongcb = rs.getDouble("luongcb");
 				
-				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu);
+				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu,luongcb);
 				list.add(cs);
 			}
 			con.close();
@@ -192,9 +198,17 @@ public class NhanVienDAO {
 				String phone = rs.getString("soDT");
 				String gchu = rs.getString("ghiChu");
 				String cvu = rs.getString("chucVu");
+				double luongcb = rs.getDouble("luongcb");
 				
-				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu);
-				list.add(cs);
+				if(cvu.equals("Admin")) {
+					NhanVien cs = new QuanLi(id,name,ns,gt,dc,phone,gchu,cvu,luongcb);
+					list.add(cs);
+				}
+				else {
+					NhanVien cs = new BanHang(id,name,ns,gt,dc,phone,gchu,cvu,luongcb);
+					list.add(cs);
+				}
+				
 			}
 			con.close();
 			rs.close();
@@ -230,7 +244,7 @@ public class NhanVienDAO {
 		}
 		return nv;
 	}
-public static List<NhanVien> getListNhanVienSapXep(String dauvao) {
+	public static List<NhanVien> getListNhanVienSapXep(String dauvao) {
 		
 		List<NhanVien> list = new ArrayList<NhanVien>();
 		
@@ -257,8 +271,9 @@ public static List<NhanVien> getListNhanVienSapXep(String dauvao) {
 				String phone = rs.getString("soDT");
 				String gchu = rs.getString("ghiChu");
 				String cvu = rs.getString("chucVu");
+				double luongcb = rs.getDouble("luongcb");
 				
-				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu);
+				NhanVien cs = new NhanVien(id,name,ns,gt,dc,phone,gchu,cvu,luongcb);
 				list.add(cs);
 			}
 			con.close();
