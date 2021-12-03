@@ -215,33 +215,34 @@ public class BangLuongJFrame extends JFrame {
 	}
 	
 	public void exportExcel() {
-		 JFileChooser chooser = new JFileChooser();
-		 int i = chooser.showSaveDialog(chooser);
-		 if (i == JFileChooser.APPROVE_OPTION) {
-		  File file = chooser.getSelectedFile();
-		  try {
-		   FileWriter out = new FileWriter(file + ".xlsx");
-		   BufferedWriter bwrite = new BufferedWriter(out);
-		   DefaultTableModel model = (DefaultTableModel) table.getModel();
-		   // ten Cot
-		   for (int j = 0; j < table.getColumnCount(); j++) {
-		    bwrite.write(model.getColumnName(j) + "\t");
-		   }
-		   bwrite.write("\n");
-		   // Lay du lieu dong
-		   for (int j = 0; j < table.getRowCount(); j++) {
-		    for (int k = 0; k < table.getColumnCount(); k++) {
-		     bwrite.write(model.getValueAt(j, k) + "\t");
-		    }
-		    bwrite.write("\n");
-		   }
-		   bwrite.close();
-		   JOptionPane.showMessageDialog(null, "Lưu file thành công!");
-		  } catch (Exception e2) {
-		   JOptionPane.showMessageDialog(null, "Lỗi khi lưu file!");
-		  }
-		 }
+		JFileChooser chooser = new JFileChooser();
+		int i = chooser.showSaveDialog(chooser);
+		if (i == JFileChooser.APPROVE_OPTION) {
+			File file = chooser.getSelectedFile();
+			try {
+				FileWriter out = new FileWriter(file + ".xlsx");
+				BufferedWriter bwrite = new BufferedWriter(out);
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				// ten Cot
+				for (int j = 0; j < table.getColumnCount(); j++) {
+					bwrite.write(model.getColumnName(j) + "\t");
+				}
+				bwrite.write("\n");
+				// Lay du lieu dong
+				for (int j = 0; j < table.getRowCount(); j++) {
+					for (int k = 0; k < table.getColumnCount(); k++) {
+						bwrite.write(model.getValueAt(j, k) + "\t");
+					}
+					bwrite.write("\n");
+				}
+				bwrite.close();
+				JOptionPane.showMessageDialog(null, "Lưu file thành công!");
+			} 
+			catch (Exception e2) {
+				JOptionPane.showMessageDialog(null, "Lỗi khi lưu file!");
+			}
 		}
+	}
 	
 	public void exportPDF() {
 		JFileChooser chooser = new JFileChooser();
@@ -252,7 +253,7 @@ public class BangLuongJFrame extends JFrame {
 			Document document = new Document(PageSize.A4.rotate());
 		    try {
 		    	String path = file.getPath();
-		    	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path));
+		    	PdfWriter writer = PdfWriter.getInstance(document, new FileOutputStream(path+".pdf"));
 		    	document.open();
 		    	String title = "Bang Luong Thang: " + thang;
 		    	Paragraph title1 = new Paragraph(title,
