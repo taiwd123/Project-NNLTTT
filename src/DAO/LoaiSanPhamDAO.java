@@ -166,5 +166,4 @@ public class LoaiSanPhamDAO {
 		return false;
 		
 	}
-
 }

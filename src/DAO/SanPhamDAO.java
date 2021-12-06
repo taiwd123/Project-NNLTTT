@@ -169,7 +169,7 @@ public class SanPhamDAO {
 			con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
 		return false;
 	}
@@ -362,4 +362,26 @@ public static boolean checkExistTenSP(String tensp) {
 		return false;
 		
 	}
+
+public static boolean checkInAnothertableSP(String maloaisp)
+{
+	Connection con = DBConnection.CreateConnection();
+	String sql = "select * from sanpham where loaisp=?";
+	PreparedStatement ps = null;
+	try {
+		
+		ps = con.prepareStatement(sql);
+		ps.setString(1,maloaisp);		
+		ResultSet rs=ps.executeQuery();
+		if(rs.isBeforeFirst()	)
+		{
+			return true;
+		}
+	} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+	}
+	return false;
+}
+
 }

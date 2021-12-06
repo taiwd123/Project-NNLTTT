@@ -193,4 +193,24 @@ public class HoaDonDAO {
 		
 		return list;
 	}
+ 	
+ 	public static boolean checkInAnothertableHD(int id)
+	{
+		Connection con = DBConnection.CreateConnection();
+		String sql = "select * from hoadon where idNV=?";
+		PreparedStatement ps = null;
+		try {
+			
+			ps = con.prepareStatement(sql);
+			ps.setInt(1,id);		
+			ResultSet rs=ps.executeQuery();
+			if(rs.isBeforeFirst()) {
+				return true;
+			}
+		} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+		return false;
+	}
 }

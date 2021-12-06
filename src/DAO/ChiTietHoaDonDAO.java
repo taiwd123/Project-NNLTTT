@@ -178,4 +178,23 @@ Connection con = DBConnection.CreateConnection();
 		return list;
 	}
 
+	public static boolean checkInAnothertableCTHD(String masp)
+	{
+		Connection con = DBConnection.CreateConnection();
+		String sql = "select * from chitiethoadon where masp=?";
+		PreparedStatement ps = null;
+		try {
+			
+			ps = con.prepareStatement(sql);
+			ps.setString(1,masp);		
+			ResultSet rs=ps.executeQuery();
+			if(rs.isBeforeFirst()) {
+				return true;
+			}
+		} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+		}
+		return false;
+	}
 }

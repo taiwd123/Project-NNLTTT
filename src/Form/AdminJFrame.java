@@ -464,18 +464,23 @@ public class AdminJFrame extends JFrame {
 						try {
 							int index = tableThongTinNV.getSelectedRow();
 							int idNV=Integer.valueOf(tableThongTinNV.getModel().getValueAt(index, 1).toString());
-							TaiKhoanDAO.deleteTaiKhoan(idNV);
-							if(NhanVienDAO.deleteNhanVien(idNV)) {
-								JOptionPane.showMessageDialog(btnXoa, "Xóa Nhân Viên Thành Công", "Nhân Viên", JOptionPane.INFORMATION_MESSAGE);
-								loadTableNhanVien();
-								loadTableTKNhanVien();
-								loadcbMaNv();
-								clearTbNV();
+							if(!HoaDonDAO.checkInAnothertableHD(idNV)) {
+								TaiKhoanDAO.deleteTaiKhoan(idNV);
+								if(NhanVienDAO.deleteNhanVien(idNV)) {
+									JOptionPane.showMessageDialog(btnXoa, "Xóa Nhân Viên Thành Công", "Nhân Viên", JOptionPane.INFORMATION_MESSAGE);
+									loadTableNhanVien();
+									loadTableTKNhanVien();
+									loadcbMaNv();
+									clearTbNV();
+								}
+								else {
+									JOptionPane.showMessageDialog(btnXoa, "Xóa Nhân Viên Không Thành Công", "Nhân Viên", JOptionPane.ERROR_MESSAGE);
+								}
 							}
 							else {
 								JOptionPane.showMessageDialog(btnXoa, "Xóa Nhân Viên Không Thành Công", "Nhân Viên", JOptionPane.ERROR_MESSAGE);
 							}
-						}
+							}
 						catch(Exception ex) {
 							JOptionPane.showMessageDialog(btnXoa, ex.getMessage().toString(), "Nhân Viên", JOptionPane.INFORMATION_MESSAGE);
 						}
@@ -1712,10 +1717,15 @@ public class AdminJFrame extends JFrame {
 					{
 						try {
 							String masp=textMaSP.getText();
-							if(SanPhamDAO.deleteSP(masp)) {
-								JOptionPane.showMessageDialog(btnXoaSP, "Xóa Sản Phẩm Thành Công", "Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
-								loadTableSP();
-								clearTBSP();
+							if(!ChiTietHoaDonDAO.checkInAnothertableCTHD(masp)) {
+								if(SanPhamDAO.deleteSP(masp)) {
+									JOptionPane.showMessageDialog(btnXoaSP, "Xóa Sản Phẩm Thành Công", "Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
+									loadTableSP();
+									clearTBSP();
+								}
+								else {
+									JOptionPane.showMessageDialog(btnXoaSP, "Xóa Sản Phẩm Không Thành Công", "Sản Phẩm", JOptionPane.ERROR_MESSAGE);
+								}
 							}
 							else {
 								JOptionPane.showMessageDialog(btnXoaSP, "Xóa Sản Phẩm Không Thành Công", "Sản Phẩm", JOptionPane.ERROR_MESSAGE);
@@ -1997,18 +2007,21 @@ public class AdminJFrame extends JFrame {
 					{
 						try {
 								String maloaisp=textMaLSP.getText();
-								SanPhamDAO.deleteSPbyMaloai(maloaisp);								
-								if(LoaiSanPhamDAO.deleteLoaiSP(maloaisp)) {
-									JOptionPane.showMessageDialog(btnXoaLSP, "Xóa Lọa Sản Phẩm Thành Công", "Loại Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
-									loadTableLSP();
-									loadTableSP();
-									loadcbMaLSP();
-									
+								if(SanPhamDAO.deleteSPbyMaloai(maloaisp)) {
+									if(LoaiSanPhamDAO.deleteLoaiSP(maloaisp)) {
+										JOptionPane.showMessageDialog(btnXoaLSP, "Xóa Lọa Sản Phẩm Thành Công", "Loại Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
+										loadTableLSP();
+										loadTableSP();
+										loadcbMaLSP();
+										
+									}
+									else {
+										JOptionPane.showMessageDialog(btnXoaLSP, "Xóa Lọa Sản Phẩm Không Thành Công", "Loại Sản Phẩm", JOptionPane.ERROR_MESSAGE);
+									}
 								}
 								else {
 									JOptionPane.showMessageDialog(btnXoaLSP, "Xóa Lọa Sản Phẩm Không Thành Công", "Loại Sản Phẩm", JOptionPane.ERROR_MESSAGE);
 								}
-							
 						}
 						catch(Exception ex) {
 							JOptionPane.showMessageDialog(btnXoaLSP, ex.getMessage().toString(), "Loại Sản Phẩm", JOptionPane.INFORMATION_MESSAGE);
