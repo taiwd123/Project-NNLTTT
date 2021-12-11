@@ -1,6 +1,6 @@
 package BEAN;
 
-import java.util.Date;
+import java.sql.Date;
 
 public class NhanVien {
 	private int idnv;

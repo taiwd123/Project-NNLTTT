@@ -511,7 +511,7 @@ public class AdminJFrame extends JFrame {
 								int idNV=Integer.valueOf(tableThongTinNV.getModel().getValueAt(index, 1).toString());				
 								String ten = textTenNV.getText();
 								String gt=(String) cbGioiTinh.getSelectedItem();		
-								Date ns=(Date) dateChooser.getDate();
+								Date ns = new Date(dateChooser.getDate().getTime());
 								String dt = textDienThoai.getText();
 								String dc = textDiaChi.getText();
 								String gc  = textGhiChu.getText();
@@ -2595,7 +2595,7 @@ public class AdminJFrame extends JFrame {
 		model.fireTableDataChanged();
 		for(NhanVien nv : list) {
 			Object[] row = new Object[] {
-					list.indexOf(nv)+1,nv.getIdnv(), nv.getTennv(), nv.getNgaysinh(), nv.getGioitinh(), nv.getSodt(),nv.getDiachi(),nv.getGhichu(),nv.getChucvu()
+					list.indexOf(nv)+1,nv.getIdnv(), nv.getTennv(), nv.getNgaysinh(), nv.getGioitinh(), nv.getDiachi(),nv.getSodt(),nv.getChucvu(),nv.getGhichu(),nv.getluongcb()
 			};
 			model.addRow(row);
 		}
